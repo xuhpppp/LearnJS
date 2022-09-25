@@ -3,21 +3,23 @@ import connection from '../configs/connectDB';
 let getHomePage = (req, res) => {
     let data = [];
 
-    let getDBIntodata = new Promise(function(resolve) {
+    let getDB = new Promise(function(resolve, reject) {
         // simple query
         connection.query(
             'SELECT * FROM `users`',
             function(err, results, fields) {
-
-                data = results;
-                resolve(data);
+                resolve(results);
             }
         );
     });
 
-    getDBIntodata.then(function(data) {
-        return res.render('index.ejs', {dataUser: JSON.stringify(data)});
-    });
+    const renderHomePage = async () => {
+        let results = await getDB;
+
+        return res.render('index.ejs', {dataUser: JSON.stringify(results)});
+    }
+
+    renderHomePage();
 }
 
 module.exports = {
