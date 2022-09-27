@@ -1,23 +1,14 @@
 import mysql from 'mysql2';
 
-const connection = mysql.createConnection({
+// Create the connection pool. The pool-specific settings are the defaults
+const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'doanthephuc',
-    database: 'nodejsbasic'
-});
+    database: 'nodejsbasic',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
 
-// // execute will internally call prepare and query
-// connection.execute(
-//     'SELECT * FROM `table` WHERE `name` = ? AND `age` > ?',
-//     ['Rick C-137', 53],
-//     function(err, results, fields) {
-//       console.log(results); // results contains rows returned by server
-//       console.log(fields); // fields contains extra meta data about results, if available
-  
-//       // If you execute same statement again, it will be picked from a LRU cache
-//       // which will save query preparation time and give better performance
-//     }
-// );
-
-export default connection;
+export default pool;

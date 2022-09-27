@@ -1,11 +1,9 @@
-import connection from '../configs/connectDB';
+import pool from '../configs/connectDB';
 
-let getHomePage = (req, res) => {
-    let data = [];
-
-    let getDB = new Promise(function(resolve, reject) {
+let getHomePage = async (req, res) => {
+    let results = await new Promise(function(resolve, reject) {
         // simple query
-        connection.query(
+        pool.query(
             'SELECT * FROM `users`',
             function(err, results, fields) {
                 resolve(results);
@@ -13,15 +11,22 @@ let getHomePage = (req, res) => {
         );
     });
 
-    const renderHomePage = async () => {
-        let results = await getDB;
+    return res.render('index.ejs', {dataUser: results});
+}
 
-        return res.render('index.ejs', {dataUser: JSON.stringify(results)});
-    }
+let getDetailPage = async (req, res) => {
+    let results = await new Promise(function(resolve, reject) {
+        pool.execute(
+            'SELECT * FROM `users` WHERE `id` = ?',
+            [req.params.userId],
+            function(err, results, fields) {
+                resolve(results);
+            });
+    });
 
-    renderHomePage();
+    return res.send(results);
 }
 
 module.exports = {
-    getHomePage
+    getHomePage, getDetailPage
 }
