@@ -27,6 +27,15 @@ let getDetailPage = async (req, res) => {
     return res.send(results);
 }
 
+let createNewUser = async (req, res) => {
+    await pool.execute(
+            'insert into `users`(firstName, lastName, email, address) values (?, ?, ?, ?)',
+            [req.body.firstName, req.body.lastName, req.body.email, req.body.address]
+    );
+
+    return res.redirect('/');
+}
+
 module.exports = {
-    getHomePage, getDetailPage
+    getHomePage, getDetailPage, createNewUser
 }
