@@ -12,7 +12,7 @@ let getAllUsers = async (req, res) => {
     });
 
     return res.status(200).json({
-        message: 'oke',
+        message: 'get oke',
         data: results
     });
 }
@@ -46,7 +46,7 @@ let editUser = async (req, res) => {
         );
 
         return res.status(200).json({
-            message: 'oke'
+            message: 'edit oke'
         });
     }
 }
